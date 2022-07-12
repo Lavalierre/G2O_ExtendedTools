@@ -1,11 +1,19 @@
 #include "pch.h"
 
+// Modules
+
+#include "workspace/modules/logicalKeys/logicalKeys.h"
+
 extern "C" SQRESULT SQRAT_API sqmodule_load(HSQUIRRELVM vm, HSQAPI api)
 {
 	SqModule::Initialize(vm, api);
 	Sqrat::DefaultVM::Set(vm);
 
-	SqModule::Print("Hello from module!\n");
+	// Initializing default root table
+	Sqrat::RootTable roottable(vm);
+
+	// Initializing 'Logical Keys' module
+	CLogicalKeys::instance().init(roottable);
 
 	return SQ_OK;
 }

@@ -15,6 +15,9 @@ file(GLOB SRC
 	"src/g2o/*.h"
 	"src/g2o/*.cpp"
 
+	"src/workspace/modules/logicalKeys/logicalKeys.h"
+	"src/workspace/modules/logicalKeys/logicalKeys.cpp"
+
 	"src/pch.h"
 	"src/sqmain.cpp"
 )
