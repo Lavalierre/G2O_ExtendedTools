@@ -10,8 +10,8 @@ class CLogicalKeys
 {
 private:
 
-	std::map<std::string, int>																m_LogicalKeysMap;	// Storage for config keys
-	std::unique_ptr<Sqrat::Class<CLogicalKeys, Sqrat::NoConstructor<CLogicalKeys>>>			sq_namespace;		// Namespace for functions and variables
+	std::map<std::string, int>												m_LogicalKeysMap;	// Storage for config keys
+	Sqrat::Class<CLogicalKeys, Sqrat::NoConstructor<CLogicalKeys>>			sq_namespace;		// Namespace for functions and variables
 
 	std::string			getConfigKey		(int);
 	int					getConfigKey		(std::string);
@@ -24,7 +24,8 @@ private:
 
 	//-----------------------------
 
-	CLogicalKeys(){};
+	CLogicalKeys() :
+		sq_namespace(Sqrat::Class<CLogicalKeys, Sqrat::NoConstructor<CLogicalKeys>>(SqModule::vm, "LogicalKey")) {};
 
 public:
 

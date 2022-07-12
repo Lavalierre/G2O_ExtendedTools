@@ -16,9 +16,6 @@
 void CLogicalKeys::init(Sqrat::RootTable roottable)
 {
 	HSQUIRRELVM vm = SqModule::vm;
-
-	// Defining namespace
-	sq_namespace = std::make_unique<Sqrat::Class<CLogicalKeys, Sqrat::NoConstructor<CLogicalKeys>>>(vm, "LogicalKey");
 	
 	// Registering keys
 	registerLogicalKey("GAME_LAME_HEAL",		"keyHeal",				GAME_LAME_HEAL);			// Heal potion hotkey
@@ -54,13 +51,13 @@ void CLogicalKeys::init(Sqrat::RootTable roottable)
 	registerLogicalKey("GAME_END",				"keyEnd",				GAME_END);
 
 	// Binding functions
-	sq_namespace->SquirrelFunc("bind",			&CLogicalKeys::bind, -3, ".iii");
-	sq_namespace->Func("unbind",				&CLogicalKeys::unbind);
-	sq_namespace->Func("get",					&CLogicalKeys::get);
-	sq_namespace->Func("reset",					&CLogicalKeys::reset);
+	sq_namespace.SquirrelFunc("bind",			&CLogicalKeys::bind, -3, ".iii");
+	sq_namespace.Func("unbind",					&CLogicalKeys::unbind);
+	sq_namespace.Func("get",					&CLogicalKeys::get);
+	sq_namespace.Func("reset",					&CLogicalKeys::reset);
 
 	// Binding the namespace to the root table
-	roottable.Bind("LogicalKey", *sq_namespace);
+	roottable.Bind("LogicalKey", sq_namespace);
 	roottable.SetInstance("LogicalKey",	&CLogicalKeys::instance());
 }
 
@@ -108,7 +105,7 @@ void CLogicalKeys::registerLogicalKey(std::string squirrelName, std::string conf
 	m_LogicalKeysMap.insert(std::pair<std::string, int>(configKey, logicalId));
 
 	// Registering new variables
-	sq_namespace->SetValue(squirrelName.c_str(), logicalId);
+	sq_namespace.SetValue(squirrelName.c_str(), logicalId);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
