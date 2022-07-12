@@ -134,10 +134,7 @@ SQInteger CLogicalKeys::bind(HSQUIRRELVM vm)
 		sq_getinteger(vm, 4, &addGameKeyId);
 
 	if (logicalId < GAME_LEFT && logicalId > GAME_LAME_HEAL)
-	{
-		SqModule::Error("(LogicalKey.bind) parameter 0 must be in range of logical keys");
-		return false;
-	}
+		return sq_throwerror(vm, "(LogicalKey.bind) parameter 0 must be in range of logical keys");
 
 	std::string configKey = CLogicalKeys::instance().getConfigKey(logicalId);
 	if (configKey != "")
