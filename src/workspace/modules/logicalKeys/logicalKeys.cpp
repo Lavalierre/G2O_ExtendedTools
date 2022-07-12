@@ -152,10 +152,10 @@ SQInteger CLogicalKeys::bind(HSQUIRRELVM vm)
 		zoptions->WriteRaw("KEYS", configKey.c_str(), controlValueList.GetArray(), controlValueList.GetNumInList() << 1, FALSE);
 		zinput->BindKeys(0);
 
-		return true;
+		sq_pushbool(vm, TRUE);
 	}
 
-	return false;
+	sq_pushbool(vm, FALSE);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
