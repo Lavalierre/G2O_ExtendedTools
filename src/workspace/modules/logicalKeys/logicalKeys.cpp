@@ -54,7 +54,7 @@ void CLogicalKeys::init(Sqrat::RootTable roottable)
 	registerLogicalKey("GAME_END",				"keyEnd",				GAME_END);
 
 	// Binding functions
-	sq_namespace->Func("bind",					&CLogicalKeys::bind);
+	sq_namespace->SquirrelFunc("bind",			&CLogicalKeys::bind, -3, ".iii");
 	sq_namespace->Func("unbind",				&CLogicalKeys::unbind);
 	sq_namespace->Func("get",					&CLogicalKeys::get);
 	sq_namespace->Func("reset",					&CLogicalKeys::reset);
@@ -114,20 +114,32 @@ void CLogicalKeys::registerLogicalKey(std::string squirrelName, std::string conf
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Function binds the logical key to physical keys
 ///
-/// \param logicalId	represents id of the game's logical key
-/// \param gameKeyId	represents main physical key that will be binded to this logical key
-/// \param addGameKeyId	represents additional physical key that will be binded. Parameter is optional
+/// \param vm represents Squirrel default VM
 /// 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool CLogicalKeys::bind(int logicalId, int gameKeyId, int addGameKeyId)
+SQInteger CLogicalKeys::bind(HSQUIRRELVM vm)
 {
+	SQInteger top = sq_gettop(vm);
+	if (top > 4)
+		return sq_throwerror(vm, "(LogicalKey.bind) wrong number of parameters");
+
+	SQInteger logicalId		= 0;
+	SQInteger gameKeyId		= 0;
+	SQInteger addGameKeyId	= 0;
+
+	sq_getinteger(vm, 2, &logicalId);
+	sq_getinteger(vm, 3, &gameKeyId);
+
+	if (top == 4)
+		sq_getinteger(vm, 4, &addGameKeyId);
+
 	if (logicalId < GAME_LEFT && logicalId > GAME_LAME_HEAL)
 	{
 		SqModule::Error("(LogicalKey.bind) parameter 0 must be in range of logical keys");
 		return false;
 	}
 
-	std::string configKey = getConfigKey(logicalId);
+	std::string configKey = CLogicalKeys::instance().getConfigKey(logicalId);
 	if (configKey != "")
 	{
 		zCArray<zWORD> controlValueList;
