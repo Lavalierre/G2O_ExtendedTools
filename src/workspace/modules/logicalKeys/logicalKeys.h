@@ -1,3 +1,9 @@
+/*
+	Author: RTSR
+	Contributors: Patrix9999
+	7/11/2022
+*/
+
 #pragma once
 
 class CLogicalKeys
