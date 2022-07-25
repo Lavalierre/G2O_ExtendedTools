@@ -16,20 +16,26 @@ void CPlayer::init(Sqrat::RootTable roottable)
 {
 	HSQUIRRELVM vm = SqModule::vm;
 	
-	sq_namespace.Func("setOnFloor", &CPlayer::setOnFloor);
+	sq_namespace.Func("setOnFloor",		&CPlayer::setOnFloor);
+	sq_namespace.Func("isAboveFloor",	&CPlayer::isAboveFloor);
+	sq_namespace.Func("getHand",		&CPlayer::getHand);
 
 	// Binding the namespace to the root table
-	roottable.Bind("Player", sq_namespace);
-	roottable.SetInstance("Player",	&CPlayer::instance());
+	roottable.Bind("Player",			sq_namespace);
+	roottable.SetInstance("Player",		&CPlayer::instance());
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Function setting current player on the floor (mesh)
+/// 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CPlayer::setOnFloor()
 {
 	zCCollObjectCharacter* coll = static_cast<zCCollObjectCharacter*>(player->anictrl->vob->GetCollisionObject());
 	if (coll)
 	{
 		zVEC3 playerPos							= player->GetPositionWorld();
-		float floorY							= coll->m_oSpatialState.m_fFloorY + 5;
+		float floorY							= coll->m_oSpatialState.m_fFloorY + 10;
 
 		// Save current HP, MP and sleeping stwate
 
@@ -47,4 +53,35 @@ void CPlayer::setOnFloor()
 		player->attribute[NPC_ATR_MANA]			= iCurMana;
 		player->SetSleepingMode(zTVobSleepingMode(iSleepingMode));
 	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Returns bool value if player is above floor (mesh)
+/// 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CPlayer::isAboveFloor()
+{
+	return player->anictrl->aboveFloor >= 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// Returns item instance in the given character hand
+///
+/// \param handId represents id of the hand
+/// 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const char* CPlayer::getHand(int handId)
+{
+	const char* slotName = "";
+	if (handId == 0)
+		slotName = "ZS_LEFTHAND";
+	else
+		slotName = "ZS_RIGHTHAND";
+
+
+	oCItem* slotItem = player->GetSlotItem(slotName);
+	if (slotItem)
+		return slotItem->GetInstanceName();
+	else
+		return "null";
 }

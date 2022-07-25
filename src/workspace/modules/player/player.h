@@ -12,6 +12,9 @@ private:
 	Sqrat::Class<CPlayer, Sqrat::NoConstructor<CPlayer>>			sq_namespace;			// Namespace for functions and variables
 
 	void		setOnFloor		();
+	bool		isAboveFloor	();
+
+	const char* getHand			(int);
 
 	//-----------------------------
 
