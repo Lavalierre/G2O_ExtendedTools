@@ -6,3 +6,4 @@ Different useful tools for server creators.
 
 # Current modules
 * Logical Key
+* Player
