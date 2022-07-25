@@ -3,3 +3,4 @@
 // User API for oCNpc
 // Add your methods here
 
+void ResetPos_Mod(zVEC3& p);

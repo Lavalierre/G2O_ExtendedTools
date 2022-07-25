@@ -17,6 +17,8 @@ file(GLOB SRC
 
 	"src/workspace/modules/logicalKeys/logicalKeys.h"
 	"src/workspace/modules/logicalKeys/logicalKeys.cpp"
+	"src/workspace/modules/player/player.h"
+	"src/workspace/modules/player/player.cpp"
 
 	"src/pch.h"
 	"src/sqmain.cpp"

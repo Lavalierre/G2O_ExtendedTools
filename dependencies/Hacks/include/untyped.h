@@ -8,7 +8,7 @@ typedef struct untyped__
 	template <class T>
 	untyped__(T x)
 	{
-		data = reinterpret_cast<void*>(x);
+		data = *reinterpret_cast<void**>(&x);
 	}
 
 	operator void* () const
